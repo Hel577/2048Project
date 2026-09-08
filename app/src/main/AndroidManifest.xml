@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme._2048Project">
         <activity
+            android:name=".GameActivity"
+            android:exported="false"
+            android:theme="@style/Theme._2048Project" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
