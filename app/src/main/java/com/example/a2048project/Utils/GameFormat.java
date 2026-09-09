@@ -190,6 +190,15 @@ public class GameFormat extends Format{
         this.role = new BaseRole();
     }
 
+    public static GameFormat getInstance(){
+        if(instance==null){
+            throw new RuntimeException("Undefined GameFormat Instance");
+        }
+        else{
+            return instance;
+        }
+    }
+
     public static GameFormat getInstance(int width, int height){
         if(instance==null){
             instance = new GameFormat(width,height);
