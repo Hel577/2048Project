@@ -17,9 +17,11 @@ public class GameFormat extends Format{
     private static GameFormat instance;
     private Role role;
     private BaseFactory blocksFactory;
+
     private GameFormat(int width, int height){
         super(width, height);
         this.role = new BaseRole();
+        this.setBlocksFactory(new BlocksFactory());
     }
 
     public void setRole(Role usr_role){
@@ -37,7 +39,7 @@ public class GameFormat extends Format{
         for(i=0;i<count;){
             int roll = (int)(Math.random()*100%this.height);
             int column = (int)(Math.random()*100%this.width);
-            if(this.getFormat(roll,column)==null){
+            if(this.getFormat(roll,column)!=null){
                 continue;//this slot is striked. Generate a new
             }
             double para = Math.random();

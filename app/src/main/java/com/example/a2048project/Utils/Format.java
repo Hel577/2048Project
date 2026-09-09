@@ -14,6 +14,9 @@ public class Format {
         this.width = width;
         this.height = height;
         this.my_format = new ArrayList<>(width*height);
+        for(int i=0;i<this.width*this.height;i++){
+            this.my_format.add(null);
+        }
     }
 
     protected int index(int roll,int column){
@@ -85,6 +88,9 @@ public class Format {
     public void initFormat(int width, int height){
         this.my_format.clear();
         this.my_format.ensureCapacity(width*height);
+        for(int i=0;i<this.width*this.height;i++){
+            this.my_format.add(null);
+        }
     }
 
     public int numOfBlockes(){
@@ -110,6 +116,14 @@ public class Format {
 
     public ArrayList<Blocks> getArray(){
         return this.my_format;
+    }
+
+    public int getWidth(){
+        return this.width;
+    }
+
+    public int getHeight(){
+        return this.height;
     }
 
     public void loadArray(ArrayList<Blocks> array){

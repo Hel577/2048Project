@@ -14,6 +14,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.a2048project.Game.BasicGame
+import com.example.a2048project.Utils.GameFormat
 import kotlin.math.log2
 
 // 2048 单个数字方块的 UI
@@ -55,27 +57,31 @@ fun TileView(value: Int) {
     }
 }
 
-// 整个 4x4 棋盘网格的 UI
-@Composable
-fun GameBoardView(board: Array<IntArray>) {
-//    Box(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .pointerInput(Unit){
-//                detectVerticalDragGestures { change, dragAmount -> {
-//                    if(dragAmount>20){
-//
-//                    }
-//                } }
-//            }
-//    )
-    val game =
 
-    Box(
+
+@Composable
+fun GameBoardView(game: BasicGame) {
+    val game_format = game._Format
+    val score = game.score
+
+    // 使用Column垂直排列，而不是Box叠加
+    Column(
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,  // 水平居中
+        verticalArrangement = Arrangement.Center  // 垂直居中
     ) {
+        // 1. 分数显示（在表格上方）
+        Text(
+            text = "得分: $score",  // 显示分数
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF776E65),
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // 2. 游戏表格（在分数下方）
         Column(
             modifier = Modifier
                 .background(
@@ -84,14 +90,14 @@ fun GameBoardView(board: Array<IntArray>) {
                 )
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
-
         ) {
-            for (row in board) {
+            for (row in 0 until game_format.height) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    for (value in row) {
-                        TileView(value = value)
+                    for (col in 0 until game_format.width) {
+                        val block = game_format.getFormat(row, col)
+                        TileView(value = block?.num ?: 0)
                     }
                 }
             }

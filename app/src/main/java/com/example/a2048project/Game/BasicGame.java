@@ -27,7 +27,7 @@ public abstract class BasicGame  implements
         this.stepStack = new Stack<>();
     }
 
-    private int getScore(){
+    public int getScore(){
         //Maintain scoreCalculator
         return scoreCalculator.getScores();
     }
@@ -35,6 +35,10 @@ public abstract class BasicGame  implements
     private void stepsStore(){
         //Store steps and maintain stacks
         throw new NotImplementedError();
+    }
+
+    public  GameFormat get_Format(){
+        return this.gameFormat;
     }
 
     public void setRole(BaseRole role){
