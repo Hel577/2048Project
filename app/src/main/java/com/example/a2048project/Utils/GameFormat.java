@@ -59,10 +59,12 @@ public class GameFormat extends Format{
         int i=0;
         int j=0;
         int score = 0;
+        boolean variable = false;
         for(;j<this.width;j++){
+            i = 0;
             Blocks block = this.getDown(i,j);
             while(block!=null){
-                this.moveBlock(block,i,j);
+                variable = this.moveBlock(block,i,j) || variable;
                 i++;
                 Blocks next_block = getDown(block.cor[0]+1,block.cor[1]);
                 if(block.merge(next_block)){
@@ -75,17 +77,22 @@ public class GameFormat extends Format{
                 }
             }
         }
+        if(!variable&&score==0){
+            return -1;
+        }
         return score;
     }
 
     private int takeDown(){
         int i=this.height-1;
         int j=0;
+        boolean variable = false;
         int score = 0;
         for(;j<this.width;j++){
+            i=this.height-1;
             Blocks block = this.getUp(i,j);
             while(block!=null){
-                this.moveBlock(block,i,j);
+                variable = this.moveBlock(block,i,j) || variable;
                 i--;
                 Blocks next_block = getUp(block.cor[0]-1,block.cor[1]);
                 if(block.merge(next_block)){
@@ -98,17 +105,22 @@ public class GameFormat extends Format{
                 }
             }
         }
+        if(!variable&&score==0){
+            return -1;
+        }
         return score;
     }
 
     private int takeLeft(){
         int i=0;
         int j=0;
+        boolean variable = false;
         int score = 0;
         for(;i<this.height;i++){
+            j = 0;
             Blocks block = this.getRight(i,j);
             while(block!=null){
-                this.moveBlock(block,i,j);
+                variable = this.moveBlock(block,i,j) || variable;
                 j++;
                 Blocks next_block = getRight(block.cor[0],block.cor[1]+1);
                 if(block.merge(next_block)){
@@ -121,17 +133,22 @@ public class GameFormat extends Format{
                 }
             }
         }
+        if(!variable&&score==0){
+            return -1;
+        }
         return score;
     }
 
     private int takeRight(){
         int i=0;
         int j=this.width-1;
+        boolean variable = false;
         int score = 0;
         for(;i<this.height;i++){
+            j = this.width-1;
             Blocks block = this.getLeft(i,j);
             while(block!=null){
-                this.moveBlock(block,i,j);
+                variable = this.moveBlock(block,i,j) || variable;
                 j--;
                 Blocks next_block = getLeft(block.cor[0],block.cor[1]-1);
                 if(block.merge(next_block)){
@@ -143,6 +160,9 @@ public class GameFormat extends Format{
                     block = next_block;
                 }
             }
+        }
+        if(!variable&&score==0){
+            return -1;
         }
         return score;
     }
@@ -173,11 +193,11 @@ public class GameFormat extends Format{
 
     public boolean isAvailable(){
         //judge is game over
-        ArrayList<Blocks> current_array = (ArrayList<Blocks>) (this.getArray().clone());
+        ArrayList<Blocks> current_array = this.cloneArray();
         for(Step.Action action :Step.Action.values()){
             int score = this.takeAction(action);
             this.loadArray(current_array);
-            if(score==0&&this.numOfBlockes()==this.height*this.width){
+            if((score==0||score==-1)&&this.numOfBlockes()==this.height*this.width){
                 continue;
             }else{
                 return true;
@@ -190,6 +210,20 @@ public class GameFormat extends Format{
     public void initFormat(int width,int height){
         super.initFormat(width, height);
         this.role = new BaseRole();
+    }
+
+    public ArrayList<Blocks> cloneArray(){
+        ArrayList<Blocks> result = new ArrayList<>();
+        for(int i=0;i<this.width*this.height;i++){
+            Blocks block = this.getArray().get(i);
+            if( block!=null){
+                result.add((Blocks) block.clone());
+            }
+            else{
+                result.add(null);
+            }
+        }
+        return result;
     }
 
     public static GameFormat getInstance(){

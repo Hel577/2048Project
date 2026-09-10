@@ -4,6 +4,7 @@ public class Blocks {
     public int num;
     public int[] cor;
     public boolean is_new;//Show is the Block updated(For dynamic function in UI)
+    public boolean is_merged;
 
     public Blocks(int init_num,int i, int j){
         this.cor = new int[2];
@@ -11,6 +12,7 @@ public class Blocks {
         this.cor[0] = i;
         this.cor[1] = j;
         this.is_new = true;
+        this.is_merged = false;
     }
 
     public int getNum(){
@@ -29,17 +31,25 @@ public class Blocks {
     public void setIs_new(Boolean is_new){
         this.is_new = is_new;
     }
+    public void setIs_merged(Boolean is_merged){ this.is_merged = is_merged;}
 
     public boolean merge(Object blocks){
         if(this.equals(blocks)){
             this.num = 2*this.getNum();
-            this.is_new = true;
+            this.is_merged = true;
+            this.is_new = false;
             return true;
         }
         else{
+            this.is_merged = false;
             this.is_new = false;
             return false;
         }
+    }
+
+    @Override
+    public Object clone(){
+        return new Blocks(this.num,this.cor[0],this.cor[1]);
     }
 
     @Override

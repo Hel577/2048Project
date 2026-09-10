@@ -9,5 +9,14 @@ public class Step {
     public enum Action{
         LEFT, RIGHT, UP, DOWN
     }//Action taken in this step
+    public Action action;
     public ArrayList<Blocks> FormatStatus;//Format Array
+    public int score;
+
+    public Step(int step,Action action,ArrayList<Blocks> array,int score){
+        this.step = step;
+        this.action = action;
+        this.FormatStatus = array;
+        this.score = score;
+    }
 }

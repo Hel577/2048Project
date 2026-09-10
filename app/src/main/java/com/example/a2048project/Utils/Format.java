@@ -105,13 +105,16 @@ public class Format {
     }
 
     public void delBlock(Blocks blocks){
-        this.my_format.remove(this.index(blocks.cor[0],blocks.cor[1]));
+        this.my_format.set(this.index(blocks.cor[0],blocks.cor[1]),null);
     }
 
-    public void moveBlock(Blocks blocks,int i,int j){
+    public boolean moveBlock(Blocks blocks,int i,int j){
+        if(i==blocks.cor[0]&&j==blocks.cor[1]){
+            return false;
+        }
         Collections.swap(this.my_format,this.index(blocks.cor[0],blocks.cor[1]),this.index(i,j));
         blocks.setCor(i,j);
-
+        return true;
     }
 
     public ArrayList<Blocks> getArray(){
